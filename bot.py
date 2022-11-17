@@ -15,6 +15,9 @@ DEBUG_GUILD = os.getenv('DEBUG_GUILD')
 # Import mcstatus to access the minecraft server information
 from mcstatus import JavaServer
 
+# Import motd cleaner from utils.py
+from src.utils import motd_cleaner
+
 # Set "bot" to the discord client
 bot = discord.Bot(debug_guilds=[DEBUG_GUILD])
 
@@ -42,7 +45,7 @@ async def on_ready():
 
 
 # When the ping command is called send an embed with some basic server information
-@bot.slash_command(name="ping", help="ping a server and get some basic information about it")
+@bot.slash_command(name="ping", description="Ping a server and get some basic information about it")
 async def ping(ctx, serveradress: str):
 	server = JavaServer.lookup(serveradress)
 	status = server.status()
@@ -54,7 +57,7 @@ async def ping(ctx, serveradress: str):
 	await ctx.respond(embed=embed)
 
 # When the status command is called send an embed with detailed server information
-@bot.slash_command(name="status", help="ping a server and get a detailed report about it")
+@bot.slash_command(name="status", description="Ping a server and get a detailed report about it")
 async def status(ctx, serveradress: str):
 	server = JavaServer.lookup(serveradress)
 	status = server.status()
@@ -63,7 +66,7 @@ async def status(ctx, serveradress: str):
 	embed.add_field(name="Online players", value="There are currently ***{0}*** players online".format(status.players.online))
 	embed.add_field(name="Max players", value="The maximum player count of this server is ***{0}***".format(status.players.max))
 	embed.add_field(name="Version", value="{0} v{1}".format(status.version.name, status.version.protocol))
-	embed.add_field(name="Description", value="{0}".format(status.description))
+	embed.add_field(name="Description", value="{0}".format(motd_cleaner(status.description)))
 	embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
 	embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
 	await ctx.respond(embed=embed)
