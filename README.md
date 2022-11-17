@@ -7,7 +7,7 @@ Minecraft Server Ping Bot, a bot to quickly check Minecraft server status and in
 - update command documentation
 
 ## Commands
-| `Command` | Explanation |
+| Command | Explanation |
 |---------|-------------|
 |         |             |
 |         |             |
