@@ -3,6 +3,7 @@ Minecraft Server Ping Bot, a bot to quickly check Minecraft server status and in
 
 ## ToDo
 - ~~port from discord.py to pycord~~
+- ~~fix bedrock support~~
 - add help command
 - fix errorhandling
 - implement live message updates

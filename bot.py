@@ -1,5 +1,6 @@
 # Import pycord to acces the discord api
 import discord
+from discord import option
 
 # Import the os module to access the environment variables
 import os
@@ -13,7 +14,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 DEBUG_GUILD = os.getenv('DEBUG_GUILD')
 
 # Import mcstatus to access the minecraft server information
-from mcstatus import JavaServer
+import mcstatus
 
 # Import motd cleaner from utils.py
 from src.utils import motd_cleaner
@@ -46,29 +47,54 @@ async def on_ready():
 
 # When the ping command is called send an embed with some basic server information
 @bot.slash_command(name="ping", description="Ping a server and get some basic information about it")
-async def ping(ctx, serveradress: str):
-	server = JavaServer.lookup(serveradress)
-	status = server.status()
-	embed = discord.Embed(title="Server ping", description="We pinged **{0}** for you!".format(serveradress), color=0x0090FF)
-	embed.add_field(name="Latency", value="{0} ms".format(int(status.latency)))
-	embed.add_field(name="Players", value="{0}/{1}".format(status.players.online, status.players.max))
-	embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
-	embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
-	await ctx.respond(embed=embed)
+@option("version", description="Choose the version of the server", choices=["Java", "Bedrock"])
+async def ping(ctx, serveradress: str, version: str):
+	if version == "Java":
+		server = mcstatus.JavaServer.lookup(serveradress)
+		status = server.status()
+		embed = discord.Embed(title="Server ping", description="We pinged **{0}** for you!".format(serveradress), color=0x0090FF)
+		embed.add_field(name="Latency", value="{0} ms".format(int(status.latency)))
+		embed.add_field(name="Players", value="{0}/{1}".format(status.players.online, status.players.max))
+		embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
+		embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
+		await ctx.respond(embed=embed)
+	else:
+		server = mcstatus.BedrockServer.lookup(serveradress)
+		status = server.status()
+		embed = discord.Embed(title="Server ping", description="We pinged **{0}** for you!".format(serveradress), color=0x0090FF)
+		embed.add_field(name="Latency", value="{0} ms".format(int(status.latency)))
+		embed.add_field(name="Players", value="{0}/{1}".format(status.players_online, status.players_max))
+		embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
+		embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
+		await ctx.respond(embed=embed)
 
 # When the status command is called send an embed with detailed server information
 @bot.slash_command(name="status", description="Ping a server and get a detailed report about it")
-async def status(ctx, serveradress: str):
-	server = JavaServer.lookup(serveradress)
-	status = server.status()
-	embed = discord.Embed(title="Server status", description="Full status of **{0}**".format(serveradress), color=0x0090FF)
-	embed.add_field(name="Latency", value="The server replied in ***{0}*** ms".format(int(status.latency)))
-	embed.add_field(name="Online players", value="There are currently ***{0}*** players online".format(status.players.online))
-	embed.add_field(name="Max players", value="The maximum player count of this server is ***{0}***".format(status.players.max))
-	embed.add_field(name="Version", value="{0} v{1}".format(status.version.name, status.version.protocol))
-	embed.add_field(name="Description", value="{0}".format(motd_cleaner(status.description)))
-	embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
-	embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
-	await ctx.respond(embed=embed)
+@option("version", description="Choose the version of the server", choices=["Java", "Bedrock"])
+async def status(ctx, serveradress: str, version: str):
+	if version == "Java":
+		server = mcstatus.JavaServer.lookup(serveradress)
+		status = server.status()
+		embed = discord.Embed(title="Server status", description="Full status of **{0}**".format(serveradress), color=0x0090FF)
+		embed.add_field(name="Latency", value="The server replied in ***{0}*** ms".format(int(status.latency)))
+		embed.add_field(name="Online players", value="There are currently ***{0}*** players online".format(status.players.online))
+		embed.add_field(name="Max players", value="The maximum player count of this server is ***{0}***".format(status.players.max))
+		embed.add_field(name="Version", value="{0} v{1}".format(status.version.name, status.version.protocol))
+		embed.add_field(name="Description", value="{0}".format(motd_cleaner(status.description)))
+		embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
+		embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
+		await ctx.respond(embed=embed)
+	else:
+		server = mcstatus.BedrockServer.lookup(serveradress)
+		status = server.status()
+		embed = discord.Embed(title="Server status", description="Full status of **{0}**".format(serveradress), color=0x0090FF)
+		embed.add_field(name="Latency", value="The server replied in ***{0}*** ms".format(int(status.latency)))
+		embed.add_field(name="Online players", value="There are currently ***{0}*** players online".format(status.players_online))
+		embed.add_field(name="Max players", value="The maximum player count of this server is ***{0}***".format(status.players_max))
+		embed.add_field(name="Version", value="{0} v{1}".format(status.version.version, status.version.protocol))
+		embed.add_field(name="Description", value="{0}".format(motd_cleaner(status.motd)))
+		embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
+		embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
+		await ctx.respond(embed=embed)
 
 bot.run(TOKEN)
