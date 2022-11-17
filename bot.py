@@ -1,6 +1,7 @@
 # Import pycord to acces the discord api
 import discord
 from discord import option
+from discord.ext import commands
 
 # Import the os module to access the environment variables
 import os
@@ -32,15 +33,14 @@ async def on_ready():
 		guild_count = guild_count + 1
 	print("MSPB is in " + str(guild_count) + " guilds.")
 
-# When a message is sent, check if it is a command, if it is, run the command, if not, send an error message
-# @bot.event
-# async def on_command_error(ctx, error):
-# 	if isinstance(error, discord.ext.commands.errors.CommandNotFound):
-# 		await ctx.send("That's not a command!! Usage: ***?ping <serveradress or IP>***")
-# 	if isinstance(error, commands.CommandOnCooldown):
-# 		await ctx.send("You have to wait another %.2f seconds before doing this again!" % error.retry_after)
-# 	if isinstance(error, discord.ext.commands.errors.CommandInvokeError):
-# 		await ctx.send(":x: Couldn't reach the server, maybe he's offline?")
+# When a command is ordered, check for any errors and send an error message if needed
+@bot.event
+async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException):
+	if isinstance(error, discord.errors.ApplicationCommandInvokeError or discord.errors.NotFound):
+		embed = discord.Embed(title=":warning: That didn't go well!", description="Something went wrong while trying to contact the server", color=0xFF0000)
+		embed.add_field(name="Possible causes", value="1. You made a typo in the serveradress\n2. You selected the wrong version\n3. The server is offline\n4. The server is not a Minecraft server\n5. My bot is just trash because I can't code\n6. Another cause I couldn't think of while writing this message")
+		embed.set_footer(text="Consider voting for the bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
+		await ctx.respond(embed=embed)
 
 # When the help command is called send an embed with some basic information about the bot
 
