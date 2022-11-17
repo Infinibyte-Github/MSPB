@@ -1,17 +1,17 @@
-# IMPORT DISCORD.PY. ALLOWS ACCESS TO DISCORD'S API.
+# Import pycord to acces the discord api
 import discord
 
-# IMPORT THE OS MODULE.
+# Import the os module to access the environment variables
 import os
 
+# Import the dotenv module to access the .env file
 from dotenv import load_dotenv
-
 load_dotenv()
 
+# Get the token from the .env file
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-from discord.ext import commands
-
+# Import mcstatus to access the minecraft server information
 from mcstatus import MinecraftServer
 
 # GETS THE CLIENT OBJECT FROM DISCORD.PY. CLIENT IS SYNONYMOUS WITH BOT.
