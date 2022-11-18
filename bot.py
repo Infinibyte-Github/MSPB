@@ -1,7 +1,6 @@
 # Import pycord to acces the discord api
 import discord
 from discord import option
-from discord.ext import commands
 
 # Import the os module to access the environment variables
 import os
@@ -22,11 +21,12 @@ from src.utils import motd_cleaner
 
 # Set "bot" to the discord client
 bot = discord.Bot(debug_guilds=[DEBUG_GUILD])
+bot_version = "1.0"
 
 # When the bot is ready, print a message to the console, count the guilds and print the number of guilds
 @bot.event
 async def on_ready():
-	print('We have logged in as {0.user}'.format(bot))
+	print('We have logged in as {0.user} v{1}'.format(bot, bot_version))
 	guild_count = 0
 	for guild in bot.guilds:
 		print(f"- {guild.id} (name: {guild.name})")
@@ -42,8 +42,20 @@ async def on_application_command_error(ctx: discord.ApplicationContext, error: d
 		embed.set_footer(text="Consider voting for the bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
 		await ctx.respond(embed=embed)
 
-# When the help command is called send an embed with some basic information about the bot
+# When the help command is called send an embed with some information about the commands
 
+# When the info command is called, send an embed with some basic information about the bot
+@bot.slash_command(name="info", description="Get some basic information about the bot")
+async def ping(ctx):
+	embed = discord.Embed(title=":information_source: MSPB Info", description="MSPB is a bot that can get information about Minecraft servers.\nThe abbreviation stands for Minecraft Server Ping Bot\nThe bot is written in Python with Pycord as wrapper.", color=0x00FF00)
+	embed.add_field(name="Latency", value=f"{round(bot.latency * 1000)}ms")
+	embed.add_field(name="Version", value=bot_version)
+	embed.add_field(name="Author", value="Bart S. aka Infinibyte")
+	embed.add_field(name="Guildcount", value=len(bot.guilds))
+	embed.add_field(name="Source code", value="https://github.com/Infinibyte-Github/MSPB")
+	embed.set_thumbnail(url="https://i.ibb.co/pXQc66y/MSPB.png")
+	embed.set_footer(text="You can contact me on discord: Infinibyte#0738", icon_url="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png")
+	await ctx.respond(embed=embed)
 
 # When the ping command is called send an embed with some basic server information
 @bot.slash_command(name="ping", description="Ping a server and get some basic information about it")

@@ -9,7 +9,7 @@ Minecraft Server Ping Bot, a bot to quickly check Minecraft server status and in
 - implement live message updates
 - update command documentation
 - add banner command
-- add info command (bot latency, version info, ....)
+- ~~add info command (bot latency, version info, ....)~~
 
 ## Commands
 | Command | Explanation |
