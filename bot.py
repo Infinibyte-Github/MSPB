@@ -47,7 +47,7 @@ async def on_application_command_error(ctx: discord.ApplicationContext, error: d
 # When the info command is called, send an embed with some basic information about the bot
 @bot.slash_command(name="info", description="Get some basic information about the bot")
 async def ping(ctx):
-	embed = discord.Embed(title=":information_source: MSPB Info", description="MSPB is a bot that can get information about Minecraft servers.\nThe abbreviation stands for Minecraft Server Ping Bot\nThe bot is written in Python with Pycord as wrapper.", color=0x00FF00)
+	embed = discord.Embed(title=":information_source: MSPB Info", description="MSPB is a bot that can get information about Minecraft servers.\nThe abbreviation stands for Minecraft Server Ping Bot.\nThe bot is written in Python with Pycord as wrapper.", color=0x00FF00)
 	embed.add_field(name="Latency", value=f"{round(bot.latency * 1000)}ms")
 	embed.add_field(name="Version", value=bot_version)
 	embed.add_field(name="Author", value="Bart S. aka Infinibyte")
