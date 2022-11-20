@@ -43,10 +43,19 @@ async def on_application_command_error(ctx: discord.ApplicationContext, error: d
 		await ctx.respond(embed=embed)
 
 # When the help command is called send an embed with some information about the commands
+@bot.slash_command(name="help", description="Get help with the bot")
+async def help(ctx):
+	embed = discord.Embed(title=":question: Help", description="Here is the list of commands", color=0x00FF00)
+	embed.add_field(name="ping", value="Ping a server and display latency and player count", inline=False)
+	embed.add_field(name="status", value="Ping a server and display a detailed report", inline=False)
+	embed.add_field(name="help", value="Get help with the bot", inline=False)
+	embed.add_field(name="info", value="Get some info about the bot", inline=False)
+	#embed.set_footer(text="Consider voting for the bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
+	await ctx.respond(embed=embed)
 
 # When the info command is called, send an embed with some basic information about the bot
 @bot.slash_command(name="info", description="Get some basic information about the bot")
-async def ping(ctx):
+async def info(ctx):
 	embed = discord.Embed(title=":information_source: MSPB Info", description="MSPB is a bot that can get information about Minecraft servers.\nThe abbreviation stands for Minecraft Server Ping Bot.\nThe bot is written in Python with Pycord as wrapper.", color=0x00FF00)
 	embed.add_field(name="Latency", value=f"{round(bot.latency * 1000)}ms")
 	embed.add_field(name="Version", value=bot_version)
@@ -68,7 +77,7 @@ async def ping(ctx, serveradress: str, version: str):
 		embed.add_field(name="Latency", value="{0} ms".format(int(status.latency)))
 		embed.add_field(name="Players", value="{0}/{1}".format(status.players.online, status.players.max))
 		embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
-		embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
+		#embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
 		await ctx.respond(embed=embed)
 	else:
 		server = mcstatus.BedrockServer.lookup(serveradress)
@@ -77,7 +86,7 @@ async def ping(ctx, serveradress: str, version: str):
 		embed.add_field(name="Latency", value="{0} ms".format(int(status.latency)))
 		embed.add_field(name="Players", value="{0}/{1}".format(status.players_online, status.players_max))
 		embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
-		embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
+		#embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
 		await ctx.respond(embed=embed)
 
 # When the status command is called send an embed with detailed server information
@@ -94,7 +103,7 @@ async def status(ctx, serveradress: str, version: str):
 		embed.add_field(name="Version", value="{0} v{1}".format(status.version.name, status.version.protocol))
 		embed.add_field(name="Description", value="{0}".format(motd_cleaner(status.description)))
 		embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
-		embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
+		#embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
 		await ctx.respond(embed=embed)
 	else:
 		server = mcstatus.BedrockServer.lookup(serveradress)
@@ -106,7 +115,7 @@ async def status(ctx, serveradress: str, version: str):
 		embed.add_field(name="Version", value="{0} v{1}".format(status.version.version, status.version.protocol))
 		embed.add_field(name="Description", value="{0}".format(motd_cleaner(status.motd)))
 		embed.set_thumbnail(url="https://eu.mc-api.net/v3/server/favicon/{0}".format(serveradress))
-		embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
+		#embed.set_footer(text="Consider voting for our bot on top.gg!", icon_url="https://i.ibb.co/pXQc66y/MSPB.png")
 		await ctx.respond(embed=embed)
 
 bot.run(TOKEN)

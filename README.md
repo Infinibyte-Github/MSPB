@@ -4,12 +4,13 @@ Minecraft Server Ping Bot, a bot to quickly check Minecraft server status and in
 ## ToDo
 - ~~port from discord.py to pycord~~
 - ~~fix bedrock support~~
-- add help command
+- ~~add help command~~
 - ~~fix errorhandling~~
+- ~~add info command (bot latency, version info, ....)~~
+- add detailed help page for every command
 - implement live message updates
 - update command documentation
 - add banner command
-- ~~add info command (bot latency, version info, ....)~~
 
 ## Commands
 | Command | Explanation |
