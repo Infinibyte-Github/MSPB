@@ -1,4 +1,5 @@
 # MSPB
+DEPRECATED, doesn't work anymore (at least, not for me...)
 Minecraft Server Ping Bot, a bot to quickly check Minecraft server status and info.
 
 ## ToDo
